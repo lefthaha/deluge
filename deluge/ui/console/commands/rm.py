@@ -47,7 +47,7 @@ class Command(BaseCommand):
     aliases = ['del']
 
     option_list = BaseCommand.option_list + (
-            make_option('--remove_data', action='store_true', default=False,
+            make_option('-r', '--remove_data', action='store_true', default=False,
                         help="remove the torrent's data"),
     )
 
