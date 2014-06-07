@@ -73,10 +73,15 @@ class AutoAdd(component.Component):
             component.pause("AutoAdd")
             return
 
-        for filename in os.listdir(self.config["autoadd_location"]):
+        # Prevent unicode path join error, use byte string when accessing filename
+        autoadd_dir = self.config["autoadd_location"]
+        if isinstance(autoadd_dir, unicode):
+            autoadd_dir = str(autoadd_dir)
+
+        for filename in os.listdir(autoadd_dir):
             try:
-                filepath = os.path.join(self.config["autoadd_location"], filename)
-            except UnicodeDecodeError, e:
+                filepath = os.path.join(autoadd_dir, filename)
+            except (UnicodeDecodeError, UnicodeEncodeError) as e:
                 log.error("Unable to auto add torrent due to improper filename encoding: %s", e)
                 continue
             if os.path.isfile(filepath) and filename.endswith(".torrent"):
